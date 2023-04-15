@@ -40,29 +40,6 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
             return View(ticket);
         }
 
-        // GET: Tickets/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Tickets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IsUsed,UseDate,id,CreatedDate,ModifiedDate")] Ticket ticket)
-        {
-            if (ModelState.IsValid)
-            {
-                ticket.id = Guid.NewGuid();
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
-                return RedirectToAc(nameof(Index));
-            }
-            return View(ticket);
-        }
-
         // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
@@ -112,43 +89,6 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(ticket);
-        }
-
-        // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null || _context.Tickets == null)
-            {
-                return NotFound();
-            }
-
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-            return View(ticket);
-        }
-
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            if (_context.Tickets == null)
-            {
-                return Problem("Entity set 'DataBaseContext.Tickets'  is null.");
-            }
-            var ticket = await _context.Tickets.FindAsync(id);
-            if (ticket != null)
-            {
-                _context.Tickets.Remove(ticket);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool TicketExists(Guid id)
