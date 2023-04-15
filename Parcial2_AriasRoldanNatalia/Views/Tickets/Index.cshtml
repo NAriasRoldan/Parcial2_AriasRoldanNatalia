@@ -4,50 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container">
+    <h1>Busque de boletería</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IsUsed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsUsed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Ingrese el ID de la boleta" aria-label="Ingrese el ID de la boleta" aria-describedby="button-addon2">
+        <button class="btn btn-success" type="button" id="button-addon2">Buscar</button>
+    </div>
+</div>
+

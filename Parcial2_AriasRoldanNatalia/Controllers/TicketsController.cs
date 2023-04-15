@@ -20,12 +20,7 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
-        {
-            return _context.Tickets != null ?
-                        View(await _context.Tickets.ToListAsync()) :
-                        Problem("Entity set 'DataBaseContext.Tickets'  is null.");
-        }
+        public IActionResult Index() => View();
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -63,7 +58,7 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
                 ticket.id = Guid.NewGuid();
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAc(nameof(Index));
             }
             return View(ticket);
         }
