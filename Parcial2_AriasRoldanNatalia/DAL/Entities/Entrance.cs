@@ -7,7 +7,7 @@ namespace Parcial2_AriasRoldanNatalia.DAL.Entities
         #region
         [Required(ErrorMessage = " El nombre de la entrada es requerido"),
             MaxLength(15),
-            Display(Name = "Entrada")]
+            Display(Name = "Portería")]
         public string Name { get; set; }
         #endregion
     }
