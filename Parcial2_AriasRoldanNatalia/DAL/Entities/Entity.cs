@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Parcial2_AriasRoldanNatalia.DAL
+namespace Parcial2_AriasRoldanNatalia.DAL.Entities
 {
     public class Entity
     {
