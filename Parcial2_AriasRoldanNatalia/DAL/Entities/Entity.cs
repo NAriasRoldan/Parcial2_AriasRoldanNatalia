@@ -7,8 +7,8 @@ namespace Parcial2_AriasRoldanNatalia.DAL.Entities
         #region
         [Key]
         public virtual Guid id { get; set; }
-        public virtual string? CreatedDate { get; set; }
-        public virtual string? ModifiedDate { get; set; }
+        public virtual DateTime? CreatedDate { get; set; }
+        public virtual DateTime? ModifiedDate { get; set; }
         #endregion
     }
 }

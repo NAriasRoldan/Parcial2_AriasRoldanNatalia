@@ -8,7 +8,7 @@ namespace Parcial2_AriasRoldanNatalia.DAL.Entities
         public bool? IsUsed { get; set; }
 
         [Display(Name = "Fecha de uso")]
-        public string? UseDate { get; set; }
+        public DateTime? UseDate { get; set; }
 
         [Display(Name = "Portería")]
         public Entrance? EntranceGate { get; set; }
