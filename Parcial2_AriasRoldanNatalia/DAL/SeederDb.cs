@@ -24,7 +24,7 @@ namespace Parcial2_AriasRoldanNatalia.DAL
         private async Task PopulateTicketAsync()
         {
             if (!_context.Entrances.Any())
-                for (int i = 0; i == 50000; i++)
+                for (int i = 1; i <= 50000; i++)
                 {
                     _context.Tickets.Add(new Ticket
                     {
