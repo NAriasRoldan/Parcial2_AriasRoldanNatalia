@@ -20,40 +20,35 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
         }
 
         // GET: Tickets
-        public IActionResult Index() => View();
-
-        // GET: Tickets/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Index(bool exist = false)
         {
-            if (id == null || _context.Tickets == null)
-            {
-                return NotFound();
-            }
-
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-            return View(ticket);
+            ViewData["exist"] = exist;
+            return View();
         }
 
+
         // GET: Tickets/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null || _context.Tickets == null)
             {
                 return NotFound();
             }
-
-            var ticket = await _context.Tickets.FindAsync(id);
-            if (ticket == null)
+            try
             {
-                return NotFound();
+                var guidValue = Guid.Parse(id);
+                var ticket = await _context.Tickets.FindAsync(guidValue);
+                if (ticket == null)
+                {
+                    return RedirectToAction(nameof(Index), new { exist = true });
+                }
+                return View(ticket);
             }
-            return View(ticket);
+            catch (Exception e)
+            {
+                return RedirectToAction(nameof(Index), new { exist = true });
+            }
+
         }
 
         // POST: Tickets/Edit/5
@@ -61,7 +56,7 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("IsUsed,UseDate,id,CreatedDate,ModifiedDate")] Ticket ticket)
+        public async Task<IActionResult> Edit(Guid id, Ticket ticket)
         {
             if (id != ticket.id)
             {

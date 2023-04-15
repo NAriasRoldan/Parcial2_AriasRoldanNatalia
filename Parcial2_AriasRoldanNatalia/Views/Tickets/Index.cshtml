@@ -1,15 +1,44 @@
-﻿@model IEnumerable<Parcial2_AriasRoldanNatalia.DAL.Entities.Ticket>
+﻿@model string
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <div class="container">
-    <h1>Busque de boletería</h1>
+    <h1>Búsqueda de boletería</h1>
 
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Ingrese el ID de la boleta" aria-label="Ingrese el ID de la boleta" aria-describedby="button-addon2">
-        <button class="btn btn-success" type="button" id="button-addon2">Buscar</button>
-    </div>
+    <form asp-action="Edit" method="get">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="id" placeholder="Ingrese el ID de la boleta" aria-label="Ingrese el ID de la boleta" aria-describedby="button-addon2">
+            <button class="btn btn-success" type="submit" id="button-addon2">Buscar</button>
+        </div>
+    </form>
+
+    @if ((bool)ViewData["exist"])
+    {
+        <div class="alert alert-danger" role="alert" id="alert-exist">
+            Esta boleta no existe, por favor verifique nuevamente
+        </div>
+    }
 </div>
 
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+
+        const existValue = '@ViewData["exist"]';
+        if (existValue) {
+            setTimeout(function () {
+                document.getElementById('alert-exist').style.display = 'none';
+            }, 10000);
+        }
+
+    </script>
+}
