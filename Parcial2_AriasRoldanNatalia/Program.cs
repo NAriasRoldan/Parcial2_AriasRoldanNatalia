@@ -33,7 +33,7 @@ namespace Parcial2_AriasRoldanNatalia
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Tickets}/{action=Index}");
 
             app.Run();
         }
