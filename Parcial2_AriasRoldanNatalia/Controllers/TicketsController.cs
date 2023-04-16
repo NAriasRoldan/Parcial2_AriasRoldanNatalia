@@ -31,18 +31,23 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
         // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(string? id)
         {
-            if (id == null || _context.Tickets == null)
+            if (_context.Tickets == null)
             {
                 return NotFound();
             }
+            if (id == null) { return RedirectToAction(nameof(Index), new { exist = true }); }
             try
             {
                 var guidValue = Guid.Parse(id);
                 var ticket = await _context.Tickets.FindAsync(guidValue);
                 var entrances = await _context.Entrances.ToListAsync();
-                if (ticket == null || ticket.IsUsed)
+                if (ticket == null)
                 {
                     return RedirectToAction(nameof(Index), new { exist = true });
+                }
+                if (ticket.IsUsed)
+                {
+                    return RedirectToAction(nameof(Details), new { id = ticket.id });
                 }
                 EditViewModel editViewModel = new() { Entrances = entrances, IdTicket = guidValue, createDateTickey = ticket.CreatedDate };
                 return View(editViewModel);
@@ -61,6 +66,7 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
                 return NotFound();
             }
             var ticket = await _context.Tickets
+                .Include(s => s.EntranceGate)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (ticket == null)
             {
@@ -93,9 +99,9 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
                     UseDate = DateTime.Now,
                 };
 
-                _context.Update(newTicket);
+                 _context.Update(newTicket);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), new { id= idTicket });
+                return RedirectToAction(nameof(Details), new { id = idTicket });
             }
             catch (DbUpdateException dbUpdateException)
             {

@@ -1,21 +1,11 @@
 ﻿@model Parcial2_AriasRoldanNatalia.DAL.Entities.Ticket
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
+<h1>Detalles de Boleto</h1>
 
 <div>
-    <h4>Ticket</h4>
+    <h4>Ticket @Model.id</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsUsed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsUsed)
-        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.UseDate)
         </dt>
@@ -23,20 +13,13 @@
             @Html.DisplayFor(model => model.UseDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
+            @Html.DisplayNameFor(model => model.EntranceGate.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedDate)
+            @Html.DisplayFor(model => model.EntranceGate.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-info" asp-action="Index"> Registrar nueva entrada</a>
 </div>
