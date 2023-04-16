@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Parcial2_AriasRoldanNatalia.DAL;
 using Parcial2_AriasRoldanNatalia.DAL.Entities;
+using Parcial2_AriasRoldanNatalia.Models;
 
 namespace Parcial2_AriasRoldanNatalia.Controllers
 {
@@ -38,11 +39,13 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
             {
                 var guidValue = Guid.Parse(id);
                 var ticket = await _context.Tickets.FindAsync(guidValue);
-                if (ticket == null)
+                var entrances = await _context.Entrances.ToListAsync();
+                if (ticket == null || ticket.IsUsed)
                 {
                     return RedirectToAction(nameof(Index), new { exist = true });
                 }
-                return View(ticket);
+                EditViewModel editViewModel = new() { Entrances = entrances, IdTicket = guidValue, createDateTickey = ticket.CreatedDate };
+                return View(editViewModel);
             }
             catch (Exception e)
             {
@@ -51,40 +54,61 @@ namespace Parcial2_AriasRoldanNatalia.Controllers
 
         }
 
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            if (id == null || _context.Tickets == null)
+            {
+                return NotFound();
+            }
+            var ticket = await _context.Tickets
+                .FirstOrDefaultAsync(m => m.id == id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            return View(ticket);
+        }
+
         // POST: Tickets/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Ticket ticket)
+        public async Task<IActionResult> Edit(Guid idTicket, EditViewModel editViewModel)
         {
-            if (id != ticket.id)
+            if (idTicket != editViewModel.IdTicket)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var guidValue = Guid.Parse(editViewModel.selectedEntrance);
+                Ticket newTicket = new()
                 {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TicketExists(ticket.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                    id = idTicket,
+                    IsUsed = true,
+                    EntranceGate = await _context.Entrances.FirstOrDefaultAsync(c => c.id == guidValue),
+                    CreatedDate = editViewModel.createDateTickey,
+                    ModifiedDate = DateTime.Now,
+                    UseDate = DateTime.Now,
+                };
+
+                _context.Update(newTicket);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { id= idTicket });
             }
-            return View(ticket);
+            catch (DbUpdateException dbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+            }
+            catch (Exception exception)
+            {
+                ModelState.AddModelError(string.Empty, exception.Message);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
+
 
         private bool TicketExists(Guid id)
         {
